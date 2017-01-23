@@ -68,14 +68,27 @@ public class MainView extends View {
 		new Label(assets).text("Portfolio Assets").center();
 		new Grid(assets).span(2);
 		
-		ArrayList<String> l = new ArrayList();
-		l.add("lkjj");
-		l.add("lkjj");
-		l.add("lkjj");
-		Table tab  = new Table(assets, l);
-//		tab = tab.test();
-		tab.background(Colors.get(255, 0, 0));
+		Grid assetsPortfolio = new Grid(window, false, true).span(2).columns(4);
+		new Label(assetsPortfolio).text("Assets").left();
+		new Label(assetsPortfolio).text("Allocation").left();
+		new Label(assetsPortfolio).text("Min.weight").left();
+		new Label(assetsPortfolio).text("Max.weight").left();
 		
+		for (int i = 0; i < 10; i++) {
+			TextBox asset  = new TextBox(assetsPortfolio, SWT.BORDER).text("Asset" + (i+1));
+			TextBox alloc  = new TextBox(assetsPortfolio, SWT.BORDER).text("%");
+			TextBox max  = new TextBox(assetsPortfolio, SWT.BORDER).text("%");
+			TextBox min  = new TextBox(assetsPortfolio, SWT.BORDER).text("%");
+		}
+		
+//		ArrayList<String> l = new ArrayList();
+//		l.add("lkjj");
+//		l.add("lkjj");
+//		l.add("lkjj");
+//		Table tab  = new Table(assets, l);
+////		tab = tab.test();
+//		tab.background(Colors.get(255, 0, 0));
+//		
 //		new Label(grid).text("label1").left();
 //		new Label(grid).text("label2").left();
 //		new Grid(grid).span(2);
