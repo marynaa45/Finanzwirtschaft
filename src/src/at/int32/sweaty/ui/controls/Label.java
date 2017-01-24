@@ -35,6 +35,8 @@ public class Label extends Widget<org.eclipse.swt.widgets.Label> {
 		this.prefix = text;
 		return this;
 	}
+	
+
 
 	public Label postfix(String text) {
 		this.postfix = text;
