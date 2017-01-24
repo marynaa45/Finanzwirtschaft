@@ -21,6 +21,10 @@ public class Label extends Widget<org.eclipse.swt.widgets.Label> {
 	public Label(Control parent) {
 		super(parent);
 	}
+	
+	public Label(Control parent, int style) {
+		super(parent, style);
+	}
 
 	public Label image(Image img) {
 		ctrl.setImage(img);
@@ -44,6 +48,8 @@ public class Label extends Widget<org.eclipse.swt.widgets.Label> {
 		this.ctrl.setText(fullText + postfix);
 		return this;
 	}
+	
+	
 
 	public Label text(Integer text) {
 		return text(text.toString());
@@ -79,6 +85,6 @@ public class Label extends Widget<org.eclipse.swt.widgets.Label> {
 	@Override
 	public org.eclipse.swt.widgets.Label getBaseControl(Composite parent,
 			int style) {
-		return new org.eclipse.swt.widgets.Label(parent, SWT.NONE);
+		return new org.eclipse.swt.widgets.Label(parent, SWT.NONE | style);
 	}
 }

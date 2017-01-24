@@ -3,8 +3,12 @@ package at.int32.sweaty.ui.controls;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 
 import at.int32.sweaty.ui.Control;
@@ -72,6 +76,19 @@ public class TextBox extends Widget<Text> {
 
 	public TextBox changed(Object o) {
 		events.register(OnTextChanged.class, o);
+		return this;
+	}
+	
+	public TextBox selection(SelectionListener listener){
+		
+		ctrl.addSelectionListener(listener);
+		return this;
+	}
+	
+	public TextBox size(int fontSize) {
+		FontData[] fD = ctrl.getFont().getFontData();
+		fD[0].setHeight(fontSize);
+		ctrl.setFont(new Font(Display.getCurrent(), fD[0]));
 		return this;
 	}
 
