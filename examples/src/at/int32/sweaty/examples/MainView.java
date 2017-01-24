@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.widgets.Display;
 
 import at.int32.sweaty.ui.Colors;
 import at.int32.sweaty.ui.Control;
@@ -17,14 +16,15 @@ import at.int32.sweaty.ui.annotations.OnClickEvent;
 import at.int32.sweaty.ui.controls.Button;
 import at.int32.sweaty.ui.controls.Dropdown;
 import at.int32.sweaty.ui.controls.Label;
-import at.int32.sweaty.ui.controls.Table;
 import at.int32.sweaty.ui.controls.TextBox;
-import at.int32.sweaty.ui.controls.ToolbarItem;
 
 public class MainView extends View {
+	
+	Control mainWindow;
 
 	public MainView(Control parent) {
 		super(parent);
+		this.mainWindow = parent;
 	}
 	
 	private ArrayList<TextBox> assetNames  ;
@@ -32,6 +32,8 @@ public class MainView extends View {
 	private ArrayList<TextBox> maxWeights;
 	private ArrayList<TextBox> minWeights ;
 	private Grid assetsPortfolio;
+	private Grid root ;
+	private Grid window;
 	
 	private TextBox totalAlloc;
 	
@@ -43,8 +45,8 @@ public class MainView extends View {
 		minWeights = new ArrayList<>();
 		
 		
-		Grid root = new Grid(this).background(Colors.get(255, 255, 255));
-		Grid window = new Grid(root).background(Colors.get(7, 135, 166));
+		root = new Grid(this).background(Colors.get(255, 255, 255));
+		window = new Grid(root).background(Colors.get(7, 135, 166));
 		
 		Grid grid = new Grid(window, false, true).columns(4);
 		
@@ -68,15 +70,15 @@ public class MainView extends View {
 	}
 	
 	private void initiateButtonsGrid(Grid buttons) {
-		Button redirect = new Button(buttons);
+		Button redirect = new Button(buttons, SWT.BUTTON1);
 		redirect.right();
 		redirect.text("Optimize");
 		redirect.selection(new SelectionListener() {
 			
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				// TODO Auto-generated method stub
-				
+				window.dispose();
+				new Grid(root).background(Colors.get(7, 135, 166));
 			}
 			
 			@Override
@@ -87,23 +89,24 @@ public class MainView extends View {
 		});
 		
 		
-		Button cancel = new Button(buttons);
+		Button cancel = new Button(buttons, SWT.BUTTON1);
 		cancel.left();
 		cancel.text("Cancel");
 		cancel.selection(new SelectionListener() {
 			
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				for (int i = 0; i < assetAllocation.size(); i++) {
-					System.out.println(assetAllocation.get(i).text());
-				}
 				
-				assetsPortfolio.update();
+				for (int i = 0; i < 2; i++) {
+					assetNames.get(i).text("Asset " + (i+1)).ctrl().layout();;
+					assetAllocation.get(i).text("").ctrl().layout();;
+					maxWeights.get(i).text("").ctrl().layout();;
+					minWeights.get(i).text("").ctrl().layout();;
+				}
 			}
 			
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {
-				// TODO Auto-generated method stub
 				
 			}
 		});		
@@ -148,32 +151,9 @@ public class MainView extends View {
 		new Label(assetsPortfolio, SWT.BOLD).text("Min.weight").foreground(Colors.get(255, 255, 255)).size(20).left();
 		new Label(assetsPortfolio, SWT.BOLD).text("Max.weight").foreground(Colors.get(255, 255, 255)).size(20).left();
 		
-		SelectionListener listener = new SelectionListener() {
-			
-			@Override
-			public void widgetSelected(SelectionEvent arg0) {
-				int totalSum = 0;
-				for (int i = 0; i < assetAllocation.size(); i++) {
-						try{
-						totalSum = totalSum + Integer.valueOf(assetAllocation.get(i).text());
-						}catch(Exception e){
-							
-						}	
-				}
-				totalAlloc.text(String.valueOf(totalAlloc));
-				totalAlloc.ctrl().layout();;
-			}
-			
-			@Override
-			public void widgetDefaultSelected(SelectionEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-		};
-
 		
-		for (int i = 0; i < 10; i++) {
-			assetNames.add(new TextBox(assetsPortfolio, SWT.BORDER).foreground(Colors.get(255, 255, 255)).selection(listener).text("Asset " + (i+1)));
+		for (int i = 0; i < 2; i++) {
+			assetNames.add(new TextBox(assetsPortfolio, SWT.BORDER).foreground(Colors.get(255, 255, 255)).text("Asset " + (i+1)));
 			assetAllocation.add(new TextBox(assetsPortfolio, SWT.BORDER).foreground(Colors.get(255, 255, 255)));
 			maxWeights.add(new TextBox(assetsPortfolio, SWT.BORDER).foreground(Colors.get(255, 255, 255)));
 			minWeights.add(new TextBox(assetsPortfolio, SWT.BORDER).foreground(Colors.get(255, 255, 255)));
@@ -181,7 +161,7 @@ public class MainView extends View {
 	}
 	
 	private void initiateTotalGrid(Control total){
-		new Label(total, SWT.BOLD).text("Total:").foreground(Colors.get(255, 255, 255)).size(12).left();
+		new Label(total, SWT.BOLD).text("Total:").foreground(Colors.get(255, 255, 255)).size(18).left();
 		int totalSum = 0;
 		for (int i = 0; i < assetAllocation.size(); i++) {
 				try{
@@ -190,7 +170,7 @@ public class MainView extends View {
 					
 				}
 		}
-		totalAlloc = new TextBox(total, SWT.BORDER).foreground(Colors.get(255, 255, 255)).size(12).text(String.valueOf(totalSum));
+		totalAlloc = new TextBox(total, SWT.BORDER).foreground(Colors.get(255, 255, 255)).size(18).text(String.valueOf(totalSum));
 	}
 	@OnClick
 	public void onClick(OnClickEvent e) {

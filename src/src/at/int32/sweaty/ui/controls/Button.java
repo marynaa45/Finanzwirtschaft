@@ -30,6 +30,11 @@ public class Button extends Widget<org.eclipse.swt.widgets.Button>{
 		ctrl.setBackground(color);
 		return this;
 	}
+	
+	public Button width(int width) {
+		data().widthHint = width;
+		return this;
+	}
 
 	@Override
 	public org.eclipse.swt.widgets.Button getBaseControl(Composite parent,
